@@ -64,50 +64,14 @@ export function Hero3D() {
   }
 
   const handleResumeDownload = () => {
-    // Create a simple resume download
-    const resumeContent = `
-ANSH AGARWAL
-Email: agarwalansh651@gmail.com | Phone: 7500906096
-Portfolio: https://ansh-portfolio.vercel.app | GitHub: Anshag45
-
-EDUCATION
-VIT Bhopal University - B.Tech in Computer Science (Sept 2022 – June 2026) - CGPA: 8.96/10.0
-Aryans International School, Moradabad - 12th Standard (2020 – 2021) - 70%
-PMS Public School, Moradabad - 10th Standard (2018 – 2019) - 95.2%
-
-TECHNICAL SKILLS
-Programming Languages: C++, Java, Python, JavaScript, TypeScript, Dart
-Web Development: HTML, CSS, React.js, Next.js, Node.js, Express.js, Tailwind CSS
-Machine Learning & Data Science: TensorFlow, Scikit-learn, Pandas, NumPy, Matplotlib, Seaborn, SciPy
-Database Management: SQL, MongoDB
-Mobile Development: Flutter, Dart
-Data Visualization & Analytics: Tableau
-
-PROJECTS
-• Smart Home Animated App - Flutter-based smart home control app with real-time IoT device management
-• Aqua Pulse – Water Quality Monitoring Dashboard - Real-time dashboard tracking water quality in 44+ stations
-• Advanced MCQ Generator Using GENAI - Full-stack app generating MCQs from web articles using OpenAI GPT
-
-CERTIFICATIONS
-• MongoDB Node.js Developer Path - MongoDB & SmartBridge (April 2025)
-• GEN AI Using IBM Watsonx - IBM Career Education Program (April 2025)
-• Full Stack Developer MERN - SmartBridge & MongoDB (Jan-Apr 2025)
-• Cloud Computing - NPTEL (Top 2%, Silver Medal, Score: 87%)
-
-ACHIEVEMENTS
-• Solved 270+ DSA problems on LeetCode and other platforms
-• 5 star in C++ on HackerRank
-    `
-
-    const blob = new Blob([resumeContent], { type: "text/plain" })
-    const url = window.URL.createObjectURL(blob)
+    // Direct link to Google Drive resume
     const link = document.createElement("a")
-    link.href = url
-    link.download = "Ansh_Agarwal_Resume.txt"
+    link.href = "https://drive.google.com/file/d/1kNvSwWAD4GbDhZbwlGslyK0fIEKsHE0N/view?usp=sharing"
+    link.target = "_blank"
+    link.rel = "noopener noreferrer"
     document.body.appendChild(link)
     link.click()
     document.body.removeChild(link)
-    window.URL.revokeObjectURL(url)
   }
 
   if (!mounted) {
