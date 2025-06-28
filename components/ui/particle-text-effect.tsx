@@ -83,7 +83,7 @@ class Particle {
 
     if (drawAsPoints) {
       ctx.fillStyle = `rgb(${currentColor.r}, ${currentColor.g}, ${currentColor.b})`
-      ctx.fillRect(this.pos.x, this.pos.y, 2, 2)
+      ctx.fillRect(this.pos.x, this.pos.y, 3, 3)
     } else {
       ctx.fillStyle = `rgb(${currentColor.r}, ${currentColor.g}, ${currentColor.b})`
       ctx.beginPath()
@@ -113,8 +113,8 @@ class Particle {
   }
 
   private generateRandomPos(x: number, y: number, mag: number): Vector2D {
-    const randomX = Math.random() * 1000
-    const randomY = Math.random() * 500
+    const randomX = Math.random() * 1200
+    const randomY = Math.random() * 600
 
     const direction = {
       x: randomX - x,
@@ -157,12 +157,12 @@ export function ParticleTextEffect({
   const mouseRef = useRef({ x: 0, y: 0, isPressed: false, isRightClick: false })
   const currentWordRef = useRef<string>("")
 
-  const pixelSteps = 6
+  const pixelSteps = 4
   const drawAsPoints = true
 
   const generateRandomPos = (x: number, y: number, mag: number): Vector2D => {
-    const randomX = Math.random() * 1000
-    const randomY = Math.random() * 500
+    const randomX = Math.random() * 1200
+    const randomY = Math.random() * 600
 
     const direction = {
       x: randomX - x,
@@ -188,9 +188,14 @@ export function ParticleTextEffect({
     offscreenCanvas.height = canvas.height
     const offscreenCtx = offscreenCanvas.getContext("2d")!
 
+    // Calculate font size based on word length and canvas size
+    let fontSize = Math.min(canvas.width / (word.length * 0.6), canvas.height * 0.4)
+    fontSize = Math.max(fontSize, 40) // Minimum font size
+    fontSize = Math.min(fontSize, 120) // Maximum font size
+
     // Draw text
     offscreenCtx.fillStyle = "white"
-    offscreenCtx.font = "bold 80px Arial"
+    offscreenCtx.font = `bold ${fontSize}px Arial`
     offscreenCtx.textAlign = "center"
     offscreenCtx.textBaseline = "middle"
     offscreenCtx.fillText(word, canvas.width / 2, canvas.height / 2)
@@ -205,6 +210,7 @@ export function ParticleTextEffect({
       { r: 236, g: 72, b: 153 },   // pink
       { r: 34, g: 197, b: 94 },    // green
       { r: 251, g: 191, b: 36 },   // yellow
+      { r: 6, g: 182, b: 212 },    // cyan
     ]
     const newColor = colors[Math.floor(Math.random() * colors.length)]
 
@@ -244,10 +250,10 @@ export function ParticleTextEffect({
           particle.pos.x = randomPos.x
           particle.pos.y = randomPos.y
 
-          particle.maxSpeed = Math.random() * 6 + 4
-          particle.maxForce = particle.maxSpeed * 0.05
-          particle.particleSize = Math.random() * 6 + 6
-          particle.colorBlendRate = Math.random() * 0.0275 + 0.0025
+          particle.maxSpeed = Math.random() * 4 + 3
+          particle.maxForce = particle.maxSpeed * 0.06
+          particle.particleSize = Math.random() * 4 + 4
+          particle.colorBlendRate = Math.random() * 0.02 + 0.005
 
           particles.push(particle)
         }
@@ -280,7 +286,7 @@ export function ParticleTextEffect({
     const particles = particlesRef.current
 
     // Background with motion blur
-    ctx.fillStyle = "rgba(0, 0, 0, 0.1)"
+    ctx.fillStyle = "rgba(0, 0, 0, 0.08)"
     ctx.fillRect(0, 0, canvas.width, canvas.height)
 
     // Update and draw particles
@@ -292,10 +298,10 @@ export function ParticleTextEffect({
       // Remove dead particles that are out of bounds
       if (particle.isKilled) {
         if (
-          particle.pos.x < 0 ||
-          particle.pos.x > canvas.width ||
-          particle.pos.y < 0 ||
-          particle.pos.y > canvas.height
+          particle.pos.x < -50 ||
+          particle.pos.x > canvas.width + 50 ||
+          particle.pos.y < -50 ||
+          particle.pos.y > canvas.height + 50
         ) {
           particles.splice(i, 1)
         }
@@ -308,13 +314,13 @@ export function ParticleTextEffect({
         const distance = Math.sqrt(
           Math.pow(particle.pos.x - mouseRef.current.x, 2) + Math.pow(particle.pos.y - mouseRef.current.y, 2),
         )
-        if (distance < 50) {
+        if (distance < 80) {
           particle.kill(canvas.width, canvas.height)
         }
       })
     }
 
-    // Auto-advance words or use external control
+    // Auto-advance words
     if (autoAdvance) {
       frameCountRef.current++
       if (frameCountRef.current % 180 === 0) { // 3 seconds at 60fps
@@ -345,8 +351,25 @@ export function ParticleTextEffect({
     const canvas = canvasRef.current
     if (!canvas) return
 
-    canvas.width = 800
-    canvas.height = 300
+    // Responsive canvas sizing
+    const updateCanvasSize = () => {
+      const container = canvas.parentElement
+      if (container) {
+        const maxWidth = Math.min(window.innerWidth * 0.9, 1000)
+        const maxHeight = Math.min(window.innerHeight * 0.4, 300)
+        
+        canvas.width = maxWidth
+        canvas.height = maxHeight
+        
+        // Re-render current word after resize
+        if (currentWordRef.current) {
+          nextWord(currentWordRef.current, canvas)
+        }
+      }
+    }
+
+    updateCanvasSize()
+    window.addEventListener('resize', updateCanvasSize)
 
     // Initialize with first word
     const initialWord = currentWord || words[0]
@@ -389,6 +412,7 @@ export function ParticleTextEffect({
       if (animationRef.current) {
         cancelAnimationFrame(animationRef.current)
       }
+      window.removeEventListener('resize', updateCanvasSize)
       canvas.removeEventListener("mousedown", handleMouseDown)
       canvas.removeEventListener("mouseup", handleMouseUp)
       canvas.removeEventListener("mousemove", handleMouseMove)
