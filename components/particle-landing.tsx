@@ -42,7 +42,7 @@ export function ParticleLanding() {
         }
         return next
       })
-    }, 4000) // Increased to 4 seconds for better readability
+    }, 4000) // 4 seconds per word
 
     return () => clearInterval(interval)
   }, [])
@@ -55,81 +55,83 @@ export function ParticleLanding() {
   }
 
   return (
-    <div className="min-h-screen bg-black flex flex-col items-center justify-center relative overflow-hidden">
-      {/* Background Effects - matching portfolio theme */}
+    <div className="fixed inset-0 w-full h-full bg-black flex flex-col items-center justify-center relative overflow-hidden z-50">
+      {/* Background Effects */}
       <div className="absolute inset-0">
         <div className="absolute top-20 left-20 w-72 h-72 bg-blue-500/10 rounded-full blur-3xl animate-pulse"></div>
         <div className="absolute bottom-20 right-20 w-96 h-96 bg-purple-500/10 rounded-full blur-3xl animate-pulse delay-1000"></div>
         <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-64 h-64 bg-pink-500/10 rounded-full blur-3xl animate-pulse delay-2000"></div>
       </div>
 
-      {/* Main Content */}
+      {/* Particle Text Effect - Full Screen */}
+      <div className="absolute inset-0 w-full h-full">
+        <ParticleTextEffect 
+          currentWord={storyWords[currentWordIndex]}
+          autoAdvance={false}
+          className="w-full h-full"
+        />
+      </div>
+
+      {/* Content Overlay */}
       <div className="relative z-10 text-center w-full h-full flex flex-col items-center justify-center">
-        {/* Particle Text Effect */}
-        <div className="mb-8 w-full flex justify-center">
-          <ParticleTextEffect 
-            currentWord={storyWords[currentWordIndex]}
-            autoAdvance={false}
-            className="mb-6"
-          />
-        </div>
-
         {/* Story Description */}
-        <AnimatePresence mode="wait">
-          <motion.div
-            key={currentWordIndex}
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -20 }}
-            transition={{ duration: 0.5 }}
-            className="mb-8"
-          >
-            <p className="text-xl md:text-2xl text-gray-300 font-light max-w-2xl mx-auto px-4">
-              {storyDescriptions[currentWordIndex]}
-            </p>
-          </motion.div>
-        </AnimatePresence>
-
-        {/* Progress Indicator */}
-        <div className="flex justify-center space-x-2 mb-12">
-          {storyWords.map((_, index) => (
-            <div
-              key={index}
-              className={`w-2 h-2 rounded-full transition-all duration-300 ${
-                index <= currentWordIndex 
-                  ? 'bg-blue-500 scale-125' 
-                  : 'bg-gray-600'
-              }`}
-            />
-          ))}
-        </div>
-
-        {/* Scroll Indicator */}
-        <AnimatePresence>
-          {showScrollIndicator && (
+        <div className="absolute bottom-32 left-1/2 transform -translate-x-1/2">
+          <AnimatePresence mode="wait">
             <motion.div
+              key={currentWordIndex}
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              className="flex flex-col items-center cursor-pointer group"
-              onClick={handleScrollToPortfolio}
+              exit={{ opacity: 0, y: -20 }}
+              transition={{ duration: 0.5 }}
+              className="mb-8"
             >
-              <motion.p 
-                className="text-gray-400 mb-4 group-hover:text-white transition-colors"
-                animate={{ y: [0, -5, 0] }}
-                transition={{ duration: 2, repeat: Infinity }}
-              >
-                Scroll to explore my portfolio
-              </motion.p>
-              <motion.div
-                animate={{ y: [0, 10, 0] }}
-                transition={{ duration: 2, repeat: Infinity }}
-                className="p-3 rounded-full border border-gray-600 group-hover:border-blue-500 transition-colors"
-              >
-                <ChevronDown className="w-6 h-6 text-gray-400 group-hover:text-blue-500 transition-colors" />
-              </motion.div>
+              <p className="text-xl md:text-2xl text-gray-300 font-light max-w-2xl mx-auto px-4">
+                {storyDescriptions[currentWordIndex]}
+              </p>
             </motion.div>
-          )}
-        </AnimatePresence>
+          </AnimatePresence>
+
+          {/* Progress Indicator */}
+          <div className="flex justify-center space-x-2 mb-12">
+            {storyWords.map((_, index) => (
+              <div
+                key={index}
+                className={`w-2 h-2 rounded-full transition-all duration-300 ${
+                  index <= currentWordIndex 
+                    ? 'bg-blue-500 scale-125' 
+                    : 'bg-gray-600'
+                }`}
+              />
+            ))}
+          </div>
+
+          {/* Scroll Indicator */}
+          <AnimatePresence>
+            {showScrollIndicator && (
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="flex flex-col items-center cursor-pointer group"
+                onClick={handleScrollToPortfolio}
+              >
+                <motion.p 
+                  className="text-gray-400 mb-4 group-hover:text-white transition-colors"
+                  animate={{ y: [0, -5, 0] }}
+                  transition={{ duration: 2, repeat: Infinity }}
+                >
+                  Scroll to explore my portfolio
+                </motion.p>
+                <motion.div
+                  animate={{ y: [0, 10, 0] }}
+                  transition={{ duration: 2, repeat: Infinity }}
+                  className="p-3 rounded-full border border-gray-600 group-hover:border-blue-500 transition-colors"
+                >
+                  <ChevronDown className="w-6 h-6 text-gray-400 group-hover:text-blue-500 transition-colors" />
+                </motion.div>
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </div>
       </div>
 
       {/* Floating Particles */}

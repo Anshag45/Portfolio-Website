@@ -352,20 +352,14 @@ export function ParticleTextEffect({
     const canvas = canvasRef.current
     if (!canvas) return
 
-    // Responsive canvas sizing
+    // Set canvas size to full viewport
     const updateCanvasSize = () => {
-      const container = canvas.parentElement
-      if (container) {
-        const maxWidth = Math.min(window.innerWidth * 0.9, 1000)
-        const maxHeight = Math.min(window.innerHeight * 0.4, 300)
-        
-        canvas.width = maxWidth
-        canvas.height = maxHeight
-        
-        // Re-render current word after resize
-        if (currentWordRef.current) {
-          nextWord(currentWordRef.current, canvas)
-        }
+      canvas.width = window.innerWidth
+      canvas.height = window.innerHeight
+      
+      // Re-render current word after resize
+      if (currentWordRef.current) {
+        nextWord(currentWordRef.current, canvas)
       }
     }
 
@@ -422,11 +416,11 @@ export function ParticleTextEffect({
   }, [])
 
   return (
-    <div className={`flex flex-col items-center justify-center ${className}`}>
+    <div className={`w-full h-full ${className}`}>
       <canvas
         ref={canvasRef}
-        className="rounded-lg"
-        style={{ maxWidth: "100%", height: "auto" }}
+        className="w-full h-full"
+        style={{ display: 'block' }}
       />
     </div>
   )
