@@ -1,4 +1,5 @@
 import { Header } from "@/components/header"
+import { HeroScrollDemo } from "@/components/hero-scroll-demo"
 import { Hero3D } from "@/components/hero-3d"
 import { About3D } from "@/components/about-3d"
 import { Skills } from "@/components/skills"
@@ -13,6 +14,7 @@ export default function Home() {
   return (
     <main className="min-h-screen bg-gradient-to-br from-slate-900 via-gray-900 to-slate-800">
       <Header />
+      <HeroScrollDemo />
       <Hero3D />
       <About3D />
       <Skills />
