@@ -83,7 +83,7 @@ class Particle {
 
     if (drawAsPoints) {
       ctx.fillStyle = `rgb(${currentColor.r}, ${currentColor.g}, ${currentColor.b})`
-      ctx.fillRect(this.pos.x, this.pos.y, 3, 3)
+      ctx.fillRect(this.pos.x, this.pos.y, 4, 4)
     } else {
       ctx.fillStyle = `rgb(${currentColor.r}, ${currentColor.g}, ${currentColor.b})`
       ctx.beginPath()
@@ -113,8 +113,8 @@ class Particle {
   }
 
   private generateRandomPos(x: number, y: number, mag: number): Vector2D {
-    const randomX = Math.random() * 1200
-    const randomY = Math.random() * 600
+    const randomX = Math.random() * window.innerWidth
+    const randomY = Math.random() * window.innerHeight
 
     const direction = {
       x: randomX - x,
@@ -161,8 +161,8 @@ export function ParticleTextEffect({
   const drawAsPoints = true
 
   const generateRandomPos = (x: number, y: number, mag: number): Vector2D => {
-    const randomX = Math.random() * 1200
-    const randomY = Math.random() * 600
+    const randomX = Math.random() * window.innerWidth
+    const randomY = Math.random() * window.innerHeight
 
     const direction = {
       x: randomX - x,
@@ -189,9 +189,9 @@ export function ParticleTextEffect({
     const offscreenCtx = offscreenCanvas.getContext("2d")!
 
     // Calculate font size based on word length and canvas size
-    let fontSize = Math.min(canvas.width / (word.length * 0.6), canvas.height * 0.4)
-    fontSize = Math.max(fontSize, 40) // Minimum font size
-    fontSize = Math.min(fontSize, 120) // Maximum font size
+    let fontSize = Math.min(canvas.width / (word.length * 0.6), canvas.height * 0.3)
+    fontSize = Math.max(fontSize, 60) // Minimum font size
+    fontSize = Math.min(fontSize, 150) // Maximum font size
 
     // Draw text
     offscreenCtx.fillStyle = "white"
@@ -250,11 +250,11 @@ export function ParticleTextEffect({
           particle.pos.x = randomPos.x
           particle.pos.y = randomPos.y
 
-          // Reduced speed for better readability
-          particle.maxSpeed = Math.random() * 2 + 1.5 // Reduced from 4-6 to 1.5-3.5
-          particle.maxForce = particle.maxSpeed * 0.04 // Reduced force
+          // Default speed
+          particle.maxSpeed = Math.random() * 2 + 2
+          particle.maxForce = particle.maxSpeed * 0.04
           particle.particleSize = Math.random() * 4 + 4
-          particle.colorBlendRate = Math.random() * 0.015 + 0.005 // Slower color blending
+          particle.colorBlendRate = Math.random() * 0.015 + 0.005
 
           particles.push(particle)
         }
@@ -286,8 +286,8 @@ export function ParticleTextEffect({
     const ctx = canvas.getContext("2d")!
     const particles = particlesRef.current
 
-    // Background with motion blur - reduced for better text visibility
-    ctx.fillStyle = "rgba(0, 0, 0, 0.08)"
+    // Clear background
+    ctx.fillStyle = "rgba(0, 0, 0, 0.1)"
     ctx.fillRect(0, 0, canvas.width, canvas.height)
 
     // Update and draw particles
@@ -369,10 +369,12 @@ export function ParticleTextEffect({
     // Initialize with first word
     const initialWord = currentWord || words[0]
     currentWordRef.current = initialWord
-    nextWord(initialWord, canvas)
-
-    // Start animation
-    animate()
+    
+    // Small delay to ensure canvas is ready
+    setTimeout(() => {
+      nextWord(initialWord, canvas)
+      animate()
+    }, 100)
 
     // Mouse event handlers
     const handleMouseDown = (e: MouseEvent) => {
@@ -419,8 +421,8 @@ export function ParticleTextEffect({
     <div className={`w-full h-full ${className}`}>
       <canvas
         ref={canvasRef}
-        className="w-full h-full"
-        style={{ display: 'block' }}
+        className="w-full h-full block"
+        style={{ background: 'transparent' }}
       />
     </div>
   )
