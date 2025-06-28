@@ -17,7 +17,7 @@ export default function Home() {
       <ParticleLanding />
       
       {/* Portfolio Content - Starts after landing */}
-      <div id="portfolio-start" className="min-h-screen bg-gradient-to-br from-slate-900 via-gray-900 to-slate-800">
+      <div id="portfolio-start" className="min-h-screen bg-black">
         <Header />
         <Hero3D />
         <About3D />
