@@ -250,10 +250,11 @@ export function ParticleTextEffect({
           particle.pos.x = randomPos.x
           particle.pos.y = randomPos.y
 
-          particle.maxSpeed = Math.random() * 4 + 3
-          particle.maxForce = particle.maxSpeed * 0.06
+          // Reduced speed for better readability
+          particle.maxSpeed = Math.random() * 2 + 1.5 // Reduced from 4-6 to 1.5-3.5
+          particle.maxForce = particle.maxSpeed * 0.04 // Reduced force
           particle.particleSize = Math.random() * 4 + 4
-          particle.colorBlendRate = Math.random() * 0.02 + 0.005
+          particle.colorBlendRate = Math.random() * 0.015 + 0.005 // Slower color blending
 
           particles.push(particle)
         }
@@ -285,7 +286,7 @@ export function ParticleTextEffect({
     const ctx = canvas.getContext("2d")!
     const particles = particlesRef.current
 
-    // Background with motion blur
+    // Background with motion blur - reduced for better text visibility
     ctx.fillStyle = "rgba(0, 0, 0, 0.08)"
     ctx.fillRect(0, 0, canvas.width, canvas.height)
 
@@ -323,7 +324,7 @@ export function ParticleTextEffect({
     // Auto-advance words
     if (autoAdvance) {
       frameCountRef.current++
-      if (frameCountRef.current % 180 === 0) { // 3 seconds at 60fps
+      if (frameCountRef.current % 240 === 0) { // 4 seconds at 60fps
         wordIndexRef.current = (wordIndexRef.current + 1) % words.length
         const newWord = words[wordIndexRef.current]
         if (newWord !== currentWordRef.current) {

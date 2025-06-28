@@ -504,3 +504,19 @@
     animation: none !important;
   }
 }
+
+/* Full screen landing page styles */
+.landing-page {
+  height: 100vh;
+  overflow: hidden;
+}
+
+/* Smooth scroll behavior */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Hide scrollbar during landing page */
+body.landing-active {
+  overflow: hidden;
+}

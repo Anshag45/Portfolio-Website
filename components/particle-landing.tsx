@@ -42,7 +42,7 @@ export function ParticleLanding() {
         }
         return next
       })
-    }, 3000) // 3 seconds per word
+    }, 4000) // Increased to 4 seconds for better readability
 
     return () => clearInterval(interval)
   }, [])
@@ -56,7 +56,7 @@ export function ParticleLanding() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 flex flex-col items-center justify-center relative overflow-hidden">
-      {/* Background Effects */}
+      {/* Background Effects - matching portfolio theme */}
       <div className="absolute inset-0">
         <div className="absolute top-20 left-20 w-72 h-72 bg-blue-500/10 rounded-full blur-3xl animate-pulse"></div>
         <div className="absolute bottom-20 right-20 w-96 h-96 bg-purple-500/10 rounded-full blur-3xl animate-pulse delay-1000"></div>
@@ -64,9 +64,9 @@ export function ParticleLanding() {
       </div>
 
       {/* Main Content */}
-      <div className="relative z-10 text-center">
+      <div className="relative z-10 text-center w-full h-full flex flex-col items-center justify-center">
         {/* Particle Text Effect */}
-        <div className="mb-8">
+        <div className="mb-8 w-full flex justify-center">
           <ParticleTextEffect 
             currentWord={storyWords[currentWordIndex]}
             autoAdvance={false}
