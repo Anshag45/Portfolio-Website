@@ -6,6 +6,7 @@ import { ThemeProvider } from "@/components/theme-provider"
 import { ParticleBackground } from "@/components/particle-background"
 import { BlackholeCursor } from "@/components/blackhole-cursor"
 import { FloatingParticles } from "@/components/floating-particles"
+import { PortfolioParticleText } from "@/components/portfolio-particle-text"
 
 const inter = Inter({ subsets: ["latin"] })
 
@@ -28,6 +29,7 @@ export default function RootLayout({
           <ParticleBackground />
           <FloatingParticles count={30} />
           <BlackholeCursor />
+          <PortfolioParticleText />
           {children}
         </ThemeProvider>
       </body>
