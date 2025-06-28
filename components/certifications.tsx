@@ -6,7 +6,7 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Award, ExternalLink, ChevronDown, ChevronUp } from "lucide-react"
 import Image from "next/image"
 import { motion } from "framer-motion"
-import { FadeIn, StaggerContainer, fadeInUpItem, Reveal, Parallax } from "./scroll-animations"
+import { ContainerScroll } from "@/components/ui/container-scroll-animation"
 
 export function Certifications() {
   const [expandedCert, setExpandedCert] = useState<number | null>(null)
@@ -70,119 +70,87 @@ export function Certifications() {
 
   return (
     <section id="certifications" className="py-16 md:py-24 bg-muted/30">
-      <div className="container mx-auto px-4">
-        <FadeIn direction="up" className="text-center mb-16">
-          <Reveal>
-            <h2 className="text-3xl md:text-4xl font-bold mb-4 relative inline-block">
-              Certifications
-              <span className="absolute -bottom-2 left-0 w-full h-1 bg-gradient-to-r from-primary/50 to-primary"></span>
+      <ContainerScroll
+        titleComponent={
+          <>
+            <h2 className="text-3xl md:text-4xl font-bold mb-4 relative inline-block text-white">
+              Professional
+              <span className="block text-4xl md:text-[4rem] font-bold mt-1 leading-none bg-gradient-to-r from-primary via-purple-500 to-blue-500 bg-clip-text text-transparent">
+                Certifications
+              </span>
             </h2>
-          </Reveal>
-          <Parallax speed={-0.2}>
             <p className="text-muted-foreground max-w-2xl mx-auto mt-4">
               Professional certifications and courses I've completed
             </p>
-          </Parallax>
-        </FadeIn>
-
-        <StaggerContainer className="max-w-4xl mx-auto space-y-8">
+          </>
+        }
+      >
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 h-full overflow-y-auto p-4">
           {certifications.map((cert, index) => (
-            <motion.div key={index} variants={fadeInUpItem}>
-              <Card className="overflow-hidden transform transition-all duration-300 hover:shadow-xl hover:-translate-y-1 border-t-4 border-t-primary/70">
-                <CardHeader className="bg-gradient-to-r from-background to-muted">
-                  <div className="flex items-center justify-between">
-                    <CardTitle className="flex items-center gap-2">
-                      <Award className="h-5 w-5 text-primary" />
+            <motion.div 
+              key={index}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: index * 0.1 }}
+              className="h-full"
+            >
+              <Card className="overflow-hidden transform transition-all duration-300 hover:shadow-xl border-t-4 border-t-primary/70 h-full flex flex-col">
+                <CardHeader className="bg-gradient-to-r from-background to-muted pb-2">
+                  <div className="flex flex-col gap-2">
+                    <CardTitle className="flex items-center gap-2 text-sm">
+                      <Award className="h-4 w-4 text-primary" />
                       {cert.title}
                     </CardTitle>
-                    <CardDescription className="bg-primary/10 px-3 py-1 rounded-full text-sm">
+                    <CardDescription className="bg-primary/10 px-2 py-1 rounded-full text-xs text-center">
                       {cert.issuer}
                     </CardDescription>
                   </div>
                 </CardHeader>
-                <CardContent className="space-y-4 pt-6">
-                  <p className="text-muted-foreground">{cert.description}</p>
+                
+                <CardContent className="flex-1 p-3">
+                  <p className="text-muted-foreground text-xs mb-3">{cert.description}</p>
 
-                  <div
-                    className={`relative w-full overflow-hidden rounded-md transition-all duration-500 cursor-pointer group ${
-                      expandedCert === index ? "h-[400px]" : "h-[200px]"
-                    }`}
-                    onClick={() => toggleExpand(index)}
-                  >
-                    <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center z-10">
-                      <span className="text-white font-medium">
-                        {expandedCert === index ? "Click to minimize" : "Click to expand"}
-                      </span>
-                    </div>
+                  <div className="relative w-full h-32 mb-3 overflow-hidden rounded-md">
                     <Image
                       src={cert.imageSrc || "/placeholder.svg"}
                       alt={`${cert.title} Certificate`}
                       fill
-                      className="object-contain transition-transform duration-500 group-hover:scale-105"
+                      className="object-contain transition-transform duration-500 hover:scale-105"
                     />
-                    <div className="absolute bottom-2 right-2 bg-background/80 backdrop-blur-sm p-1 rounded-full">
-                      {expandedCert === index ? (
-                        <ChevronUp className="h-5 w-5 text-primary" />
-                      ) : (
-                        <ChevronDown className="h-5 w-5 text-primary" />
-                      )}
-                    </div>
                   </div>
 
-                  <div className="flex flex-wrap gap-y-2 justify-between items-center text-sm">
+                  <div className="flex flex-wrap gap-1 justify-between items-center text-xs">
                     {cert.date && (
-                      <span className="font-medium bg-muted px-3 py-1 rounded-md">Issued: {cert.date}</span>
+                      <span className="font-medium bg-muted px-2 py-1 rounded-md text-xs">
+                        {cert.date}
+                      </span>
                     )}
                     {cert.grade && (
-                      <span className="font-medium bg-muted px-3 py-1 rounded-md">Grade: {cert.grade}</span>
+                      <span className="font-medium bg-muted px-2 py-1 rounded-md text-xs">
+                        {cert.grade}
+                      </span>
                     )}
                     {cert.award && (
-                      <span className="text-primary font-medium bg-primary/10 px-3 py-1 rounded-md">{cert.award}</span>
-                    )}
-                    {cert.certificateId && (
-                      <span className="font-medium bg-muted px-3 py-1 rounded-md">ID: {cert.certificateId}</span>
+                      <span className="text-primary font-medium bg-primary/10 px-2 py-1 rounded-md text-xs">
+                        {cert.award}
+                      </span>
                     )}
                   </div>
-
-                  {expandedCert === index && cert.details && (
-                    <motion.div
-                      className="mt-4 space-y-2"
-                      initial={{ opacity: 0, y: 20 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ delay: 0.2 }}
-                    >
-                      <h4 className="font-medium text-sm">Additional Details:</h4>
-                      <ul className="list-disc pl-5 text-sm text-muted-foreground space-y-1">
-                        {cert.details.map((detail, i) => (
-                          <motion.li
-                            key={i}
-                            initial={{ opacity: 0, x: -10 }}
-                            animate={{ opacity: 1, x: 0 }}
-                            transition={{ delay: 0.3 + i * 0.1 }}
-                          >
-                            {detail}
-                          </motion.li>
-                        ))}
-                      </ul>
-                    </motion.div>
-                  )}
                 </CardContent>
-                <CardFooter className="bg-muted/30 py-4">
-                  <Button size="sm" asChild className="relative overflow-hidden group">
+                
+                <CardFooter className="bg-muted/30 py-2 mt-auto">
+                  <Button variant="outline" size="sm" asChild className="w-full text-xs h-8">
                     <a href={cert.viewLink} target="_blank" rel="noopener noreferrer">
-                      <span className="absolute inset-0 w-full h-full bg-gradient-to-r from-primary to-primary/70 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></span>
-                      <span className="relative z-10 flex items-center">
-                        <ExternalLink className="mr-2 h-4 w-4 group-hover:animate-pulse" />
-                        Verify Certificate
-                      </span>
+                      <ExternalLink className="mr-1 h-3 w-3" />
+                      Verify
                     </a>
                   </Button>
                 </CardFooter>
               </Card>
             </motion.div>
           ))}
-        </StaggerContainer>
-      </div>
+        </div>
+      </ContainerScroll>
     </section>
   )
 }
